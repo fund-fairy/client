@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <script src="https://www.paypal.com/sdk/js?client-id=AcozVVgl90w30n5E05EFANc2yZDdGLwcdTEK0smFfKmvU0mKgWMrbhbdbfoG23lg3C28uGyjr2FVdrXy"></script>
+  <script src="https://www.paypal.com/sdk/js?disable-funding=credit&client-id=AcozVVgl90w30n5E05EFANc2yZDdGLwcdTEK0smFfKmvU0mKgWMrbhbdbfoG23lg3C28uGyjr2FVdrXy"></script>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -118,6 +118,9 @@
 
     // render paypal buttons
     paypal.Buttons({
+      style: {
+        color: 'black',
+      },
       enableStandardCardFields: true,
       createOrder: function(data, actions) {
         return actions.order.create({
@@ -136,11 +139,11 @@
       },
       onApprove: function(data, actions) {
         return actions.order.capture()
-        .then(function(details) {
+        .then((details) => {
           // console.log('details', details);
+          // mode: 'no-cors',
           return fetch('https://vff5lgvcki.execute-api.us-east-1.amazonaws.com/dev/paypal-transaction-complete', {
             method: 'post',
-            mode: 'no-cors',
             headers: {
               'content-type': 'application/json'
             },
@@ -148,8 +151,13 @@
               orderID: data.orderID
             })
           })
+          .then((details) => {
+            if (!details.ok) {
+              throw Error(details.statusText);
+            }
+          })
           .catch((err) => {
-            console.error(err);
+            console.error('Fetch threw a fetchin error \n', err);
           });
         });
       }
