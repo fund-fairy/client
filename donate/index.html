@@ -140,6 +140,7 @@
           // console.log('details', details);
           return fetch('https://vff5lgvcki.execute-api.us-east-1.amazonaws.com/dev/paypal-transaction-complete', {
             method: 'post',
+            credentials: 'include',
             headers: {
               'content-type': 'application/json'
             },
