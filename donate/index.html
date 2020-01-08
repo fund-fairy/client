@@ -138,7 +138,7 @@
         return actions.order.capture()
         .then(function(details) {
           // console.log('details', details);
-          return fetch('http://localhost:3000/paypal-transaction-complete', {
+          return fetch('https://vff5lgvcki.execute-api.us-east-1.amazonaws.com/dev/paypal-transaction-complete', {
             method: 'post',
             headers: {
               'content-type': 'application/json'
